@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 public class FlowLayout extends ViewGroup {
 
@@ -43,13 +44,26 @@ public class FlowLayout extends ViewGroup {
                 continue;
             }
 
-            int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(widthLeft, MeasureSpec.AT_MOST);
-            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, heightChildrenMode);
+            int w ;
+            if(currentView.getLayoutParams().width == LayoutParams.MATCH_PARENT){
+                w = maxWidth;
+            } else {
+                w = currentView.getLayoutParams().width;
+            }
+            int h;
+            if(currentView.getLayoutParams().height == LayoutParams.MATCH_PARENT){
+                h = maxHeight;
+            } else {
+                h = currentView.getLayoutParams().height;
+            }
+
+            int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(w, MeasureSpec.AT_MOST);
+            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(h, heightChildrenMode);
 
             currentView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
 
             int childWidth = currentView.getMeasuredWidth();
-            widthLeft -= childWidth;
+            widthLeft -= w;
             if (widthLeft >= 0) {
                 lineHeight = Math.max(lineHeight, currentView.getMeasuredHeight());
             }
